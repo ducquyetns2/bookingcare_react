@@ -1,0 +1,67 @@
+@import '../../../assets/styles/variable.scss';
+
+.container_register {
+
+    #form_register {
+        background-color: white;
+        position: relative;
+        padding: 23px 35px;
+        border-radius: 20px;
+
+        .register_language {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+        }
+
+        .grid_row {
+            >div {
+                margin-top: 30px;
+                padding: 0 40px;
+
+                .item_input {
+                    position: relative;
+
+                    input[type="passsword"]::-webkit-outer-spin-button,
+                    ::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                    }
+
+                    input {
+                        width: 100%;
+                    }
+
+                    &.register_gender {
+                        input {
+                            transform: scale(1.1)
+                        }
+
+                        label {
+                            width: 100%;
+                            text-align: center;
+                        }
+                    }
+                }
+
+                .container_gender {
+                    display: flex;
+
+                    label {
+                        margin-left: 7px;
+                    }
+                }
+            }
+        }
+    }
+
+    .register_submit {
+        margin: 20px auto !important;
+        width: 350px;
+        max-width: 100%;
+        background-color: $blue-color;
+    }
+
+    .register_link {
+        width: 500px;
+    }
+}

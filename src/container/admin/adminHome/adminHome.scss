@@ -1,0 +1,99 @@
+@import '../../../assets/styles/variable.scss';
+
+.admin_home {
+    background: -webkit-linear-gradient(bottom, #c471f5, #fa71cd);
+    width: 100%;
+    padding: 30px 80px;
+    min-height: 100vh;
+
+    .home_container {
+        background-color: white;
+
+        .home_assist {
+            display: flex;
+            align-items: center;
+            padding: 0 20px 10px 20px;
+
+            .home_title {
+                text-align: center;
+                padding: 20px 0 10px 0;
+                text-transform: uppercase;
+                flex-grow: 1;
+            }
+        }
+
+        .home_content {
+            display: flex;
+            padding-right: 20px;
+
+            thead th {
+                text-transform: uppercase;
+                font-weight: 600;
+                font-size: 1.6rem;
+            }
+
+            tr {
+                display: flex;
+                flex-shrink: 0;
+
+                th,
+                td {
+                    padding-left: 15px;
+                    height: 50px;
+                    display: flex;
+                    align-items: center;
+                }
+            }
+
+            .field_fixed {
+                box-shadow: 0 3px 4px #ccc;
+
+                th,
+                td {
+                    width: 100%;
+                }
+
+                .table_action {
+                    margin-left: 5px;
+
+                    div {
+                        padding: 7px;
+                        cursor: pointer;
+                    }
+
+                    .action_delete {
+                        margin-left: 20px;
+                        color: red;
+
+                        &:hover {
+                            opacity: 0.7;
+                        }
+                    }
+                }
+            }
+
+            .field_dynamic {
+                overflow-x: scroll;
+                margin-left: 2px;
+
+                .dynamic_content {
+                    tr {
+
+                        th,
+                        td {
+                            margin: 0;
+                            word-wrap: break-word;
+                            // height: 50px;
+
+                            img {
+                                width: 60px;
+                                object-fit: contain;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}

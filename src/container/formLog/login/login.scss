@@ -1,0 +1,55 @@
+@import '../../../assets/styles/variable.scss';
+
+.container_login {
+
+
+    #form_login {
+        background-color: white;
+        padding: 20px;
+        border-radius: 20px;
+        position: relative;
+
+        .login_language {
+            position: absolute;
+            top: 12px;
+            right: 20px;
+        }
+
+        >div {
+            margin-top: 30px;
+            position: relative;
+
+            input {
+                width: 400px;
+                min-width: 100%;
+            }
+        }
+
+        .form_submit {
+            width: 400px;
+            min-width: 100%;
+
+            margin-bottom: 20px;
+        }
+
+        .login_forgetPassword {
+            margin: 0 10px 20px 10px;
+            float: right;
+            clear: both;
+            font-size: 1.6rem;
+            color: #3b71ca;
+
+            &:hover {
+                opacity: 0.9;
+                cursor: pointer;
+            }
+        }
+
+        .login_link {
+            width: 300px;
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: $blue-color;
+        }
+    }
+}

@@ -1,0 +1,39 @@
+@import '../../../assets/styles/variable.scss';
+
+.footer {
+    display: flex;
+    justify-content: center;
+    background-color: $lightGray-color;
+    gap: 25px;
+    margin: 0 auto;
+
+    &_image {
+        img {
+            width: 100%;
+        }
+    }
+
+    &_detail {
+        padding-top: 30px;
+        line-height: 40px;
+
+        i {
+            color: $blue-color;
+            margin-right: 7px;
+        }
+
+        .download_image {
+            width: 120px;
+            height: 45px;
+            margin-right: 10px;
+        }
+
+        &_link {
+            margin-top: 10px;
+            font-size: 1.6rem;
+            line-height: 20px;
+            color: $blue-color;
+            display: block;
+        }
+    }
+}
