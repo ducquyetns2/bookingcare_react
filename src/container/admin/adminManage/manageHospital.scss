@@ -1,0 +1,24 @@
+@import '../../../assets/styles/variable.scss';
+
+.manage_hospital {
+    .container_hospital {
+        #form_hospital_detail {
+            .grid_row {
+                margin: 0 -20px;
+
+                >div {
+                    padding: 0 20px;
+                    margin-top: 20px;
+
+                    .item_input {
+                        font-size: 1.8rem;
+
+                        input {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

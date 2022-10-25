@@ -1,69 +1,24 @@
 import './famousDoctor.scss'
-import { useContext } from 'react'
+import { useContext, useLayoutEffect, useState } from 'react'
 import { Context } from '~/store/Provider'
 import Slider from '~/components/slider/Slider'
-import bsHaNoi from '~/assets/images/bs-hanoi.jpg'
 import Helper from '~/services/Helper'
 
-let famousDoctor = [
-    {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    }, {
-        src: bsHaNoi,
-        description: 'Thạc sĩ, bác sĩ chuyên khoa Hà Nội',
-        department: 'Sức khỏe tinh thần'
-    },
-]
 function FamousDoctor() {
     const [state] = useContext(Context)
-    var translation = Helper.translate(state.language, 'homePage')
-    translation = translation.content
+    var translation = Helper.translate(state.language, 'homePage').content
+    const [doctor, setDoctor] = useState()
+    useLayoutEffect(() => {
+        fetch('http://localhost:8080/api/doctor/getAllDoctor').then(response => response.json())
+            .then(result => {
+                setDoctor(result.data)
+            })
+    }, [])
     var data = {
+        type: 'doctor',
         title: translation.famousDoctor,
         button: translation.search,
-        images: famousDoctor
+        recievedData: doctor
     }
     let options = {
         imageCircle: true

@@ -1,0 +1,60 @@
+@import '../../assets/styles/variable.scss';
+
+.container_booking {
+    .doctor_infor_modal {
+        display: flex;
+        margin-bottom: 15px;
+
+        .doctor_avatar {
+            img {
+                width: 60px;
+                height: 60px;
+                object-fit: cover;
+                margin: 0 auto 7px auto;
+                border-radius: 50%;
+                border: none;
+            }
+        }
+
+        .doctor_note {
+            padding-top: 15px;
+            padding-left: 15px;
+        }
+    }
+
+    .price_time {
+        display: flex;
+        justify-content: space-between;
+
+        .price,
+        .time {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 2px solid #bdbdbd;
+            font-size: 1.7rem;
+            flex-basis: 170px;
+            text-align: center;
+            position: relative;
+
+            label {
+                position: absolute;
+                width: 100%;
+                top: -23px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-weight: 600;
+            }
+        }
+    }
+
+    .parentInput {
+        position: relative;
+        margin-top: 15px;
+
+        input {
+            width: 100%;
+        }
+    }
+
+}

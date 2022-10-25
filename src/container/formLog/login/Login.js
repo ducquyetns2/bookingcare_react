@@ -6,13 +6,32 @@ import Helper from '~/services/Helper'
 import validator from '~/services/validator'
 import { setLanguage, login } from '~/store/actions'
 import { ToastContainer, toast } from 'react-toastify'
+import Select from 'react-select'
+import { language, department, actions } from '~/store/constant'
 
-function Login() {
-    const navigation = useNavigate()
+function Login({ setDepartment }) {
+    const navigate = useNavigate()
     const [state, dispatch] = useContext(Context)
     var translation = Helper.translate(state.language, 'formLog')
     const [eye, setEye] = useState(false)
     const submitMessage = useRef()
+    const [selectedDepartment, setSelectedDepartment] = useState(department.USER)
+    const [departments, setDepartments] = useState()
+    // Define options 
+    const [departmentOptions, setDepartmentOptions] = useState()
+    useEffect(() => {
+        if (setDepartment) {
+            fetch('http://localhost:8080/api/define/getDepartment').then(response => response.json())
+                .then(result => {
+                    if (!result.error) {
+                        setDepartments(result.data)
+                    }
+                })
+        }
+    }, [])
+    useEffect(() => {
+        departments && setDepartmentOptions(Helper.createSelectOptions(departments, state.language, 'define'))
+    }, [departments, state.language])
     useEffect(() => {
         validator({
             form: '#form_login',
@@ -31,8 +50,11 @@ function Login() {
                 validator.removeSpace('#login_password', '#form_login'),
             ]
         })
-    })
+    }, [state.language, selectedDepartment])
     const handleSubmit = (formValues) => {
+        if (setDepartment) {
+            formValues.department = selectedDepartment
+        }
         fetch('http://localhost:8080/api/user/compareUser', {
             method: 'POST',
             headers: {
@@ -42,24 +64,45 @@ function Login() {
         }).then(response => response.json())
             .then((result) => {
                 if (result.error) {
-                    submitMessage.current.innerText = translation.errorMessage.wrongUser
-                    toast.error(translation.errorMessage.wrongUser, {
-                        position: "top-center",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    })
+                    if (setDepartment) {
+                        submitMessage.current.innerText = translation.errorMessage.wrongDetailUser
+                        toast.error(translation.errorMessage.wrongDetailUser, {
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        })
+                    } else {
+                        submitMessage.current.innerText = translation.errorMessage.wrongUser
+                        toast.error(translation.errorMessage.wrongUser, {
+                            position: "top-center",
+                            autoClose: 2000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        })
+                    }
                 } else {
                     submitMessage.current.innerText = ''
                     let data = result.data
-                    dispatch(login('LOGIN', {
+                    dispatch(login(actions.LOGIN, {
                         ...data,
-                        login: true
                     }))
-                    navigation('/')
+                    switch (selectedDepartment) {
+                        case department.DOCTOR:
+                            navigate('/admin/manageDoctor')
+                            break
+                        case department.ADMIN:
+                            navigate('/admin')
+                            break
+                        default:
+                            navigate('/')
+                    }
                 }
             })
     }
@@ -71,10 +114,10 @@ function Login() {
                 </Link>
                 <h2 className='form_title'>{translation.login}</h2>
                 <div className='change_language login_language'>
-                    <span className={(state.language === 'vi') ? 'active' : ''}
-                        onClick={() => dispatch(setLanguage('VI'))}>VN</span>/
-                    <span className={(state.language === 'en') ? 'active' : ''}
-                        onClick={() => dispatch(setLanguage('EN'))}>EN</span>
+                    <span className={(state.language === language.VIETNAMESE) ? 'active' : ''}
+                        onClick={() => dispatch(setLanguage(language.VIETNAMESE))}>VN</span>/
+                    <span className={(state.language === language.ENGLISH) ? 'active' : ''}
+                        onClick={() => dispatch(setLanguage(language.ENGLISH))}>EN</span>
                 </div>
                 <div className='parentInput'>
                     <input type='text' className='reset_input animate_input' id='login_usename' name='useName' />
@@ -82,12 +125,20 @@ function Login() {
                     <p className='error_message'></p>
                 </div>
                 <div className='login_password password_eye parentInput'>
-                    <input type={(eye) ? 'text' : 'password'} className='reset_input animate_input' id='login_password' name='password' />
+                    <input type={(eye) ? 'text' : 'password'} className='reset_input animate_input' id='login_password'
+                        name='password' />
                     <label htmlFor='login_password' className='common_label'>{translation.password}</label>
                     <p className='error_message'></p>
                     <i className={(eye) ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"}
                         onClick={() => setEye(!eye)}></i>
                 </div>
+                {setDepartment && <div className='item_department parentInput'>
+                    <Select options={departmentOptions} placeholder={translation.errorMessage.isChoose}
+                        onChange={(e) => setSelectedDepartment(e.value)} className='z_index has_data'
+                        value={departmentOptions && departmentOptions.find((item) => item.value === selectedDepartment)} />
+                    <label className='common_label'>{translation.department}</label>
+                    <p className='error_message'></p>
+                </div>}
                 <p className='login_forgetPassword'>{translation.forgotPassword}</p>
                 <div className='parentSubmit'>
                     <p className='error_message' ref={submitMessage}></p>

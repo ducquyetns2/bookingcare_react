@@ -9,19 +9,6 @@
     .home_container {
         background-color: white;
 
-        .home_assist {
-            display: flex;
-            align-items: center;
-            padding: 0 20px 10px 20px;
-
-            .home_title {
-                text-align: center;
-                padding: 20px 0 10px 0;
-                text-transform: uppercase;
-                flex-grow: 1;
-            }
-        }
-
         .home_content {
             display: flex;
             padding-right: 20px;
@@ -87,6 +74,7 @@
 
                             img {
                                 width: 60px;
+                                height: 40px;
                                 object-fit: contain;
                             }
                         }

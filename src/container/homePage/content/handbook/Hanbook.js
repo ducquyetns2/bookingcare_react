@@ -1,46 +1,24 @@
 import './handbook.scss'
-import { useContext } from 'react'
+import { useContext, useState, useLayoutEffect } from 'react'
 import { Context } from '~/store/Provider'
 import Slider from '~/components/slider/Slider'
-import bookHong from '~/assets/images/cam-nang-nam.png'
-import bookNam from '~/assets/images/cam-nang-hong.png'
 import Helper from '~/services/Helper'
 
-let handBook = [
-    {
-        src: bookNam,
-        description: 'Bắn laser trị nám bao nhiêu tiền? Bảng giá tại 5 địa chỉ uy tín ở Hà Nội'
-    }, {
-        src: bookHong,
-        description: 'Bạn chưa tìm được bác sĩ thích hợp? Để chúng tôi giới thiệu với bạn 8 bác sĩ Tai Mũi Họng giỏi ở TP HCM'
-    }, {
-        src: bookNam,
-        description: 'Bắn laser trị nám bao nhiêu tiền? Bảng giá tại 5 địa chỉ uy tín ở Hà Nội'
-    }, {
-        src: bookHong,
-        description: 'Bạn chưa tìm được bác sĩ thích hợp? Để chúng tôi giới thiệu với bạn 8 bác sĩ Tai Mũi Họng giỏi ở TP HCM'
-    }, {
-        src: bookNam,
-        description: 'Bắn laser trị nám bao nhiêu tiền? Bảng giá tại 5 địa chỉ uy tín ở Hà Nội'
-    }, {
-        src: bookHong,
-        description: 'Bạn chưa tìm được bác sĩ thích hợp? Để chúng tôi giới thiệu với bạn 8 bác sĩ Tai Mũi Họng giỏi ở TP HCM'
-    }, {
-        src: bookNam,
-        description: 'Bắn laser trị nám bao nhiêu tiền? Bảng giá tại 5 địa chỉ uy tín ở Hà Nội'
-    }, {
-        src: bookHong,
-        description: 'Bạn chưa tìm được bác sĩ thích hợp? Để chúng tôi giới thiệu với bạn 8 bác sĩ Tai Mũi Họng giỏi ở TP HCM'
-    }
-]
 function Handbook() {
     const [state] = useContext(Context)
-    var translation = Helper.translate(state.language, 'homePage')
-    translation = translation.content
+    var translation = Helper.translate(state.language, 'homePage').content
+    const [handbooks, setHandbooks] = useState()
+    useLayoutEffect(() => {
+        fetch('http://localhost:8080/api/doctor/getAllHandbookInfor').then(response => response.json())
+            .then(result => {
+                setHandbooks(result.data)
+            })
+    }, [])
     var data = {
+        type: 'handbookInfor',
         title: translation.handbook,
         button: translation.allHandbook,
-        images: handBook
+        recievedData: handbooks
     }
     var options = {
         divideItem: true

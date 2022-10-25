@@ -23,6 +23,10 @@
                 width: 400px;
                 min-width: 100%;
             }
+
+            &.item_department {
+                position: relative;
+            }
         }
 
         .form_submit {

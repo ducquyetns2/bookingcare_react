@@ -1,37 +1,43 @@
+import { language, actions } from '~/store/constant'
+
 function reducer(state, action) {
     var data = action.data
     var newState = {}
     switch (action.type) {
-        case 'VI':
+        case language.VIETNAMESE:
             newState = {
                 ...state,
-                language: 'vi'
+                language: language.VIETNAMESE
             }
             break
-        case 'EN':
+        case language.ENGLISH:
             newState = {
                 ...state,
-                language: 'en'
+                language: language.ENGLISH
             }
             break
-        case 'LOGIN':
+        case actions.LOGIN:
             newState = {
                 ...state,
                 ...data,
                 login: true,
             }
             break
-        case 'LOGOUT':
+        case actions.LOGOUT:
             newState = {
                 ...state,
                 login: false,
                 id: '',
                 fullName: '',
+                phoneNumber: '',
+                email: '',
+                gender: '',
                 useName: '',
-                avatarPath: ''
+                avatarPath: '',
+                department: ''
             }
             break
-        case 'USER_EDIT':
+        case actions.USER_EDIT:
             newState = {
                 ...state,
                 ...data

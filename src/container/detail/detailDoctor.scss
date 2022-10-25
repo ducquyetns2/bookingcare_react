@@ -1,0 +1,162 @@
+@import '../../assets/styles/variable.scss';
+
+.detail_doctor {
+    max-width: 1260px;
+    margin: 0 auto;
+    position: relative;
+
+    .goBack {
+        position: absolute;
+        top: 7px;
+        left: 10px;
+        font-size: 2.4rem;
+        color: $blue-color;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+
+    .detail_content {
+        padding: 0 50px 30px;
+
+        .doctor_introduce {
+            display: flex;
+            margin: 20px 0;
+
+            .doctor_avatar {
+                img {
+                    width: 120px;
+                    height: 120px;
+                    object-fit: cover;
+                    margin: 0 auto 7px auto;
+                    border-radius: 50%;
+                    border: none;
+                }
+            }
+
+            .doctor_note {
+                padding-top: 15px;
+                padding-left: 15px;
+            }
+        }
+
+        .doctor_booking {
+            &-left {
+                .title {
+                    text-transform: uppercase;
+                    font-weight: 600;
+
+                    i {
+                        margin-right: 10px;
+                        color: $blue-color;
+                    }
+                }
+
+                .date {
+                    width: 180px;
+                    padding: 3px;
+                    cursor: pointer;
+                    border-bottom: 2px solid #ccc;
+                    color: $darkBlue-color;
+                    font-size: 1.7rem;
+
+                    i {
+                        margin-left: 3px;
+                        color: $blue-color;
+                    }
+                }
+
+                .doctor_schedule {
+                    margin-top: 15px;
+                    gap: 15px;
+
+                    .time_item {
+                        padding: 5px;
+                        border-radius: 12px;
+                        border: 2px solid #bdbdbd;
+                        background-color: yellow;
+                        font-size: 1.7rem;
+                        flex-basis: 170px;
+                        text-align: center;
+                        cursor: pointer;
+
+                        &:hover {
+                            border: 2px solid $blue-color;
+                        }
+                    }
+                }
+            }
+
+            &-right {
+                border-left: 2px solid #cccccc;
+
+                .doctor_infor {
+                    padding-left: 20px;
+                    padding-top: 10px;
+
+                    .address {
+                        text-transform: uppercase;
+                    }
+
+                    .clinic_address {
+                        font-size: 1.6rem;
+                    }
+
+                    .doctor_price {
+                        border-top: 2px solid $lightGray-color;
+
+                        .price_title {
+                            margin-top: 10px;
+                            text-transform: uppercase;
+                            display: inline-block;
+                            font-size: 1.6rem;
+                        }
+
+                        .price {
+                            margin-left: 5px;
+                        }
+
+                        .show_detail_btn {
+                            color: $blue-color;
+                            margin-left: 5px;
+                            padding: 3px;
+                            cursor: pointer;
+                        }
+
+                        &_detail {
+                            border: 1px solid #ccc;
+                            background-color: $lightGray-color;
+                            border-radius: 3px;
+
+                            p {
+                                padding: 0 10px;
+                            }
+
+                            .price_detail_header {
+                                margin: 5px 10px;
+                                display: flex;
+                                justify-content: space-between;
+                            }
+
+                            .price_detail_footer {
+                                border-top: 2px solid #ccc;
+                                border-bottom: 2px solid #ccc;
+                                background-color: #ddd;
+                            }
+
+                            .hidden_detail_btn {
+                                color: $blue-color;
+                                margin: 5px 10px;
+                                padding: 3px;
+                                cursor: pointer;
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

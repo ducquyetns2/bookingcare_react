@@ -21,7 +21,7 @@ function validator(options) {
                     message = inputTest[i](value)
                     break
                 default:
-                    message = inputTest[i](input.value.trim())
+                    message = inputTest[i](input.value && input.value.trim())
             }
             if (message) break
         }
@@ -82,6 +82,9 @@ function validator(options) {
                 isValid = false
             }
         })
+        if (options.extraValidate) {
+            isValid = options.extraValidate() && isValid
+        }
         if (isValid) {
             var enableInputs = $$(`[name]:not([disabled])`)
             var formValues = [...enableInputs].reduce((currentValue, input) => {
@@ -102,9 +105,14 @@ function validator(options) {
                 }
             }, {})
             // Submit Form
-            const allInputs = $$(`input:not([disabled])`)
-            options.handleSubmit(formValues, allInputs)
+            options.handleSubmit(formValues, enableInputs)
         }
+    }
+}
+validator.alwaysValid = (input) => {
+    return {
+        input,
+        test: () => ''
     }
 }
 validator.isRequire = (input, message) => {

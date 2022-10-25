@@ -6,6 +6,7 @@ import { Context } from '~/store/Provider'
 import Helper from '~/services/Helper'
 import validator from '~/services/validator'
 import { setLanguage, userEdit } from '~/store/actions'
+import { language, actions } from '~/store/constant'
 
 function UserEdit() {
     const [state, dispatch] = useContext(Context)
@@ -28,9 +29,6 @@ function UserEdit() {
             })
     }, [])
     useEffect(() => {
-        if (!state.login) {
-            navigate('/login')
-        }
         validator({
             form: '#form_userEdit',
             errorSelector: '.error_message',
@@ -77,7 +75,6 @@ function UserEdit() {
             formData.append(formFields[i], formValues[formFields[i]])
         }
         formData.append('id', state.id)
-        console.log([...formData])
         // Send data
         fetch('http://localhost:8080/api/user/editUser', {
             method: 'PUT',
@@ -87,9 +84,9 @@ function UserEdit() {
             .then(result => {
                 // Reset Data
                 setAvatar()
-                Helper.clearInputData(inputElements, '.parentInput', '.error_message')
+                Helper.clearInputData(inputElements)
                 submitMessage.current.innerText = translation.editSuccess
-                dispatch(userEdit('USER_EDIT', result.data))
+                dispatch(userEdit(actions.USER_EDIT, result.data))
                 toast.success(translation.editSuccess, {
                     position: "bottom-right",
                     autoClose: 2000,
@@ -109,10 +106,10 @@ function UserEdit() {
                 </Link>
                 <h2 className='form_title'>{translation.edit}</h2>
                 <div className='change_language userEdit_language'>
-                    <span className={(state.language === 'vi') ? 'active' : ''}
-                        onClick={() => dispatch(setLanguage('VI'))}>VN</span>/
-                    <span className={(state.language === 'en') ? 'active' : ''}
-                        onClick={() => dispatch(setLanguage('EN'))}>EN</span>
+                    <span className={(state.language === language.VIETNAMESE) ? 'active' : ''}
+                        onClick={() => dispatch(setLanguage(language.VIETNAMESE))}>VN</span>/
+                    <span className={(state.language === language.ENGLISH) ? 'active' : ''}
+                        onClick={() => dispatch(setLanguage(language.ENGLISH))}>EN</span>
                 </div>
                 <div className='grid_row'>
                     <div className='col_4_12'>
@@ -147,7 +144,7 @@ function UserEdit() {
                                         <input type='radio' id={`userEdit_gender_${item.valueEn}`} className='item_gender'
                                             value={item.keyMap} name='gender' defaultChecked={(item.keyMap === state.gender) ? 'true' : ''} />
                                         <label htmlFor={`userEdit_gender_${item.valueEn}`}>
-                                            {(state.language === 'vi') ? item.valueVi : item.valueEn}</label>
+                                            {(state.language === language.VIETNAMESE) ? item.valueVi : item.valueEn}</label>
                                     </div>
                                 )
                             })}

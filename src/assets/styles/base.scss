@@ -20,6 +20,10 @@
     flex: 0 0 50%;
 }
 
+.col_12_12 {
+    flex: 0 0 100%;
+}
+
 .col_11_12 {
     flex: 0 0 91.6666%;
 }
@@ -127,6 +131,16 @@
     transform: translateY(-1rem) translateY(0.1rem) scale(.8);
 }
 
+.item_input {
+    position: relative;
+}
+
+.unvalid_border {
+    >div {
+        border: 2px solid red !important;
+    }
+}
+
 .unvalid_input {
     input {
         border: 2px solid red !important;
@@ -142,13 +156,24 @@
     margin-top: 5px;
 }
 
+.common_area {
+    width: 100%;
+    min-height: 100px;
+}
+
+.common_area_min {
+    width: 100%;
+    min-height: 50px;
+}
+
 .animate_input {
     padding: 5px 8px;
     border: 2px solid #bdbdbd;
     border-radius: 7px;
+    width: 100%;
 
     &:focus {
-        border: 2px solid #3b71ca;
+        border: 2px solid #3b71ca !important;
     }
 
     &:focus~label {
@@ -192,6 +217,8 @@
     display: flex;
     justify-content: center;
     margin: 0 auto;
+    font-size: 1.6rem;
+    cursor: pointer;
 
     &:hover {
         color: $darkBlue-color;
@@ -279,7 +306,8 @@
     }
 }
 
-.return_homePage {
+.return_homePage,
+.return_back {
     padding: 5px;
     font-size: 2.4rem;
     color: $blue-color;
@@ -316,4 +344,80 @@
 
 .form_select {
     font-size: 1.8rem;
+}
+
+.background_violet {
+    background: -webkit-linear-gradient(bottom, #c471f5, #fa71cd);
+}
+
+.z_index {
+    z-index: 5;
+}
+
+.z_index_higher {
+    z-index: 6;
+}
+
+.admin_common_padding {
+    padding: 20px 30px;
+}
+
+.custom_border {
+    padding: 5px 8px;
+    border: 2px solid #bdbdbd;
+    border-radius: 7px;
+    width: 100%;
+}
+
+// Override CSS react-datepicker
+.react-datepicker__header {
+    .react-datepicker__current-month {
+        font-size: 2.1rem;
+        font-weight: 500;
+    }
+
+    .react-datepicker__day-names {
+        div {
+            font-size: 1.8rem;
+            width: 45px;
+            height: 45px;
+            align-items: center;
+            line-height: 45px;
+        }
+    }
+}
+
+.react-datepicker__month {
+    padding: 10px;
+
+    .react-datepicker__day {
+        font-size: 1.8rem;
+        width: 45px;
+        height: 45px;
+        align-items: center;
+        line-height: 45px;
+    }
+}
+
+.sub_title {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.admin_change_btn {
+    margin: 10px 0 0 20px;
+    padding: 5px 20px;
+    font-size: 1.5rem;
+    margin-bottom: -5px;
+}
+
+.admin_save_btn {
+    background-color: $blue-color;
+    width: 350px;
+}
+
+.admin_cancel_btn {
+    margin-top: 20px;
+    background-color: $blue-color;
+    width: 500px;
 }

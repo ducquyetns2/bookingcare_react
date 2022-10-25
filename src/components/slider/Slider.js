@@ -1,13 +1,63 @@
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
+import { Context } from '~/store/Provider'
+import { language } from '~/store/constant'
 import './slider.scss'
 
 const $ = document.querySelector.bind(document)
 const $$ = document.querySelectorAll.bind(document)
 function Slider(props) {
+    const [state, dispatch] = useContext(Context)
     var data = props.data
     var options = props.options
     var position = 0;
     var index = 1;
+    let newData = []
+    if (data.recievedData) {
+        let recievedData = data.recievedData
+        switch (data.type) {
+            case 'doctor':
+                newData = recievedData.map(item => {
+                    return {
+                        link: `detailDoctor/${item.id}`,
+                        image: item.avatarPath,
+                        name: item.fullName,
+                        positionData: item.positionData
+                    }
+                })
+                break
+            case 'specialtyInfor':
+                newData = recievedData.map(item => {
+                    return {
+                        link: `detailSpecialty/${item.id}`,
+                        image: item.imagePath,
+                        multiName: item.specialtyName,
+                    }
+                })
+                console.log(newData)
+                break
+            case 'hospitalInfor':
+                newData = recievedData.map(item => {
+                    return {
+                        link: `detailHospital/${item.id}`,
+                        image: item.imagePath,
+                        multiName: item.hospitalName,
+                    }
+                })
+                break
+            case 'handbookInfor':
+                newData = recievedData.map(item => {
+                    return {
+                        link: `detailHandbook/${item.handbookId}`,
+                        image: item.imagePath,
+                        multiName: { valueVi: item.titleVi, valueEn: item.titleEn }
+                    }
+                })
+                break
+            default:
+        }
+    }
+    // console.log(newData)
     useLayoutEffect(() => {
         let items = $$(`#${props.id} .item_content`)
         items = [...items]
@@ -61,6 +111,9 @@ function Slider(props) {
             }
         }
     }
+    const handleScrollToTop = () => {
+        window.scrollTo(0, 0)
+    }
     return <div className='slider' id={props.id}>
         <div className='slider_header'>
             <h2>{data.title}</h2>
@@ -71,17 +124,21 @@ function Slider(props) {
         <div className='slider_wraper'>
             <div className='slider_content'>
                 {
-                    data.images.map((item, index) =>
-                        <a key={index} className='reset_a item_content' href='#' >
+                    newData && newData.map((item, index) =>
+                        <Link key={index} className='reset_a item_content' to={item.link}
+                            onClick={handleScrollToTop}>
                             <div>
-                                <img src={item.src} alt='img' />
-                                <p>{item.description}</p>
-                                {
-                                    item.department ? <p className='department'>
-                                        {item.department}</p> : ''
-                                }
+                                <img src={item.image} alt='img' />
+                                {item.name && <p>{item.name}</p>}
+                                {item.multiName && <p>
+                                    {(state.language === language.VIETNAMESE) ?
+                                        item.multiName.valueVi : item.multiName.valueEn}
+                                </p>}
+                                {item.positionData && <p className='position'>
+                                    {(state.language === language.VIETNAMESE) ?
+                                        item.positionData.valueVi : item.positionData.valueEn}</p>}
                             </div>
-                        </a>)
+                        </Link>)
                 }
             </div>
         </div>

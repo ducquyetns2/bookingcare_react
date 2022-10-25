@@ -1,12 +1,10 @@
-import Header from './header'
+import Header from './header/Thumbnail'
 import Content from './content'
-import Footer from './footer/Footer'
 
 function HomePage() {
     return <div className='homePage'>
         <Header />
         <Content />
-        <Footer />
     </div>
 }
 export default HomePage

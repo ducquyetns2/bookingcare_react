@@ -1,13 +1,14 @@
 import './adminHome.scss'
-import { useState, useContext, useLayoutEffect } from 'react'
+import { useState, useContext, useLayoutEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Context } from '~/store/Provider'
-import { setLanguage } from '~/store/actions'
 import Helper from '~/services/Helper'
 import { ToastContainer, toast } from 'react-toastify'
+import NavigateAssist from '~/components/adminNavigate/NavigateAssist'
+import { language } from '~/store/constant'
 
 function AdminHome() {
-    const [state, dispatch] = useContext(Context)
+    const [state] = useContext(Context)
     const [users, setUsers] = useState()
     const translation = Helper.translate(state.language, 'admin')
     const [deleteUser, setDeleteUser] = useState(false)
@@ -21,12 +22,12 @@ function AdminHome() {
             })
     }, [deleteUser])
     // Handle Delete User
-    var userId
+    var userId = useRef()
     const handleClickDelete = (e) => {
-        userId = e.target.getAttribute('user-id')
+        userId.current = e.target.getAttribute('user-id')
     }
     const handleDeleteUser = (e) => {
-        fetch(`http://localhost:8080/api/user/deleteUser/${userId}`, {
+        fetch(`http://localhost:8080/api/user/deleteUser/${userId.current}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,19 +61,7 @@ function AdminHome() {
     return (
         <div className='admin_home'>
             <div className='home_container'>
-                <div className='home_assist'>
-                    <Link className='return_homePage' to='/' style={{ marginTop: '15px' }}>
-                        <i className="fa-solid fa-house"></i>
-                    </Link>
-                    <h2 className='home_title'>{translation.listAccount}</h2>
-                    <div className='change_language register_language'>
-                        <span className={(state.language === 'vi') ? 'active' : ''}
-                            onClick={() => dispatch(setLanguage('VI'))}>VN</span>/
-                        <span className={(state.language === 'en') ? 'active' : ''}
-                            onClick={() => dispatch(setLanguage('EN'))}>EN</span>
-                    </div>
-                </div>
-                <Link className='reset_a btn btn-primary' to='/adminRegister' style={{ fontSize: '1.6rem', marginLeft: '70px' }}>{translation.createUser}</Link>
+                <NavigateAssist title={translation.listAccount} />
                 <div className='home_content'>
                     <div className='field_fixed col_4_12'>
                         <table className="table fixed_content">
@@ -126,16 +115,16 @@ function AdminHome() {
                                             <td style={{ width: '200px' }}>{user.phoneNumber}</td>
                                             <td style={{ width: '300px' }}>{user.email}</td>
                                             <td style={{ width: '150px' }}>
-                                                {(state.language === 'vi') ? user.genderData.valueVi : user.genderData.valueEn}
+                                                {(state.language === language.VIETNAMESE) ? user.genderData.valueVi : user.genderData.valueEn}
                                             </td>
                                             <td style={{ width: '150px' }}>
                                                 <img src={user.avatarPath} alt='img' />
                                             </td>
                                             <td style={{ width: '150px' }}>
-                                                {(state.language === 'vi') ? user.positionData.valueVi : user.positionData.valueEn}
+                                                {(state.language === language.VIETNAMESE) ? user.positionData.valueVi : user.positionData.valueEn}
                                             </td>
                                             <td style={{ width: '150px' }}>
-                                                {(state.language === 'vi') ? user.departmentData.valueVi : user.departmentData.valueEn}
+                                                {(state.language === language.VIETNAMESE) ? user.departmentData.valueVi : user.departmentData.valueEn}
                                             </td>
                                             <td style={{ width: '200px' }}>{user.createdAt}</td>
                                             <td style={{ width: '200px' }}>{user.updatedAt}</td>

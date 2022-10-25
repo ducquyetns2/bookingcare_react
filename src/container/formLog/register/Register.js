@@ -6,6 +6,7 @@ import { Context } from '~/store/Provider'
 import Helper from '~/services/Helper'
 import validator from '~/services/validator'
 import { setLanguage } from '~/store/actions'
+import { language } from '~/store/constant'
 
 function Register() {
     const [state, dispatch] = useContext(Context)
@@ -54,7 +55,7 @@ function Register() {
                 validator.isEmail('#register_email', translation.errorMessage.isEmail),
                 validator.maxLength('#register_email', translation.errorMessage.maxLength, 50),
 
-                validator.isRequire('.item_gender', translation.errorMessage.isRequire),
+                validator.isRequire('.item_gender', translation.errorMessage.isChoose),
 
                 validator.isRequire('#register_usename', translation.errorMessage.isRequire),
                 validator.isAccents('#register_usename', translation.errorMessage.isAccents),
@@ -94,7 +95,6 @@ function Register() {
         formFields.forEach(field => {
             formData.append(field, formValues[field])
         })
-        formData.append('department', 'US')
         // Send data
         fetch('http://localhost:8080/api/user/createUser', {
             method: 'POST',
@@ -120,7 +120,7 @@ function Register() {
                     // Reset Data
                     btnReturn.current.onclick = () => {
                         setAvatar()
-                        Helper.clearInputData(inputElements, '.parentInput', '.error_message')
+                        Helper.clearInputData(inputElements)
                         setEyePassword(false)
                         setEyeRePassword(false)
                     }
@@ -136,10 +136,10 @@ function Register() {
                 </Link>
                 <h2 className='form_title'>{translation.register}</h2>
                 <div className='change_language register_language'>
-                    <span className={(state.language === 'vi') ? 'active' : ''}
-                        onClick={() => dispatch(setLanguage('VI'))}>VN</span>/
-                    <span className={(state.language === 'en') ? 'active' : ''}
-                        onClick={() => dispatch(setLanguage('EN'))}>EN</span>
+                    <span className={(state.language === language.VIETNAMESE) ? 'active' : ''}
+                        onClick={() => dispatch(setLanguage(language.VIETNAMESE))}>VN</span>/
+                    <span className={(state.language === language.ENGLISH) ? 'active' : ''}
+                        onClick={() => dispatch(setLanguage(language.ENGLISH))}>EN</span>
                 </div>
                 <div className='grid_row'>
                     <div className='col_4_12'>
@@ -172,7 +172,7 @@ function Register() {
                                         <input type='radio' id={`register_gender_${item.valueEn}`} className='item_gender'
                                             value={item.keyMap} name='gender' />
                                         <label htmlFor={`register_gender_${item.valueEn}`}>
-                                            {(state.language === 'vi') ? item.valueVi : item.valueEn}</label>
+                                            {(state.language === language.VIETNAMESE) ? item.valueVi : item.valueEn}</label>
                                     </div>
                                 )
                             })}

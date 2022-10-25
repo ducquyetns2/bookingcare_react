@@ -6,6 +6,7 @@ import { Context } from '~/store/Provider'
 import Helper from '~/services/Helper'
 import validator from '~/services/validator'
 import { setLanguage } from '~/store/actions'
+import { language, position, department } from '~/store/constant'
 
 function AdminRegister() {
     const navigate = useNavigate()
@@ -19,8 +20,8 @@ function AdminRegister() {
     const [positions, setPositions] = useState()
     const [departments, setDepartments] = useState()
     // Set default value
-    const [userPosition, setUserPosition] = useState('NO')
-    const [userDepartment, setUserDepartment] = useState('US')
+    const [userPosition, setUserPosition] = useState(position.NO)
+    const [userDepartment, setUserDepartment] = useState(state.department)
     // Define element
     const submitMessage = useRef()
     const closeModal = useRef()
@@ -61,7 +62,11 @@ function AdminRegister() {
             }
         }).then(response => response.json())
             .then(result => {
-                setDepartments(result.data)
+                let data = result.data
+                if (state.department === department.DOCTOR) {
+                    data = data.filter(item => item.keyMap !== department.ADMIN)
+                }
+                setDepartments(data)
             })
     }, [])
     useEffect(() => {
@@ -85,11 +90,11 @@ function AdminRegister() {
                 validator.isEmail('#adminRegister_email', translation.errorMessage.isEmail),
                 validator.maxLength('#adminRegister_email', translation.errorMessage.maxLength, 50),
 
-                validator.isRequire('.item_gender', translation.errorMessage.isRequire),
+                validator.isRequire('.item_gender', translation.errorMessage.isChoose),
 
-                validator.isRequire('.adminRegister_position', translation.errorMessage.isRequire),
+                validator.isRequire('.adminRegister_position', translation.errorMessage.isChoose),
 
-                validator.isRequire('.adminRegister_department', translation.errorMessage.isRequire),
+                validator.isRequire('.adminRegister_department', translation.errorMessage.isChoose),
 
                 validator.isRequire('#adminRegister_usename', translation.errorMessage.isRequire),
                 validator.isAccents('#adminRegister_usename', translation.errorMessage.isAccents),
@@ -156,9 +161,9 @@ function AdminRegister() {
                         setAvatar()
                         setEyePassword(false)
                         setEyeRePassword(false)
-                        setUserPosition('NO')
-                        setUserDepartment('US')
-                        Helper.clearInputData(inputElements, '.parentInput', '.error_message')
+                        setUserPosition(position.NO)
+                        setUserDepartment(state.department)
+                        Helper.clearInputData(inputElements)
                     }
                 }
             })
@@ -167,15 +172,20 @@ function AdminRegister() {
         <div className='background_linear container_adminRegister container_form'>
             <form id='form_adminRegister' className='form_content'>
                 <div className='adminRegister_assist'>
-                    <Link className='return_homePage' to='/'>
-                        <i className="fa-solid fa-house"></i>
-                    </Link>
+                    {(state.department === department.ADMIN) ?
+                        <Link className='return_homePage' to='/admin'>
+                            <i className="fa-solid fa-house"></i>
+                        </Link> :
+                        <div className='return_back' onClick={handleGoBack} title={translation.goBack}>
+                            <i className="fa-solid fa-arrow-left"></i>
+                        </div>
+                    }
                     <h2 className='form_title'>{translation.register}</h2>
                     <div className='change_language adminRegister_language'>
-                        <span className={(state.language === 'vi') ? 'active' : ''}
-                            onClick={() => dispatch(setLanguage('VI'))}>VN</span>/
-                        <span className={(state.language === 'en') ? 'active' : ''}
-                            onClick={() => dispatch(setLanguage('EN'))}>EN</span>
+                        <span className={(state.language === language.VIETNAMESE) ? 'active' : ''}
+                            onClick={() => dispatch(setLanguage(language.VIETNAMESE))}>VN</span>/
+                        <span className={(state.language === language.ENGLISH) ? 'active' : ''}
+                            onClick={() => dispatch(setLanguage(language.ENGLISH))}>EN</span>
                     </div>
                 </div>
                 <div className='grid_row'>
@@ -209,7 +219,7 @@ function AdminRegister() {
                                         <input type='radio' id={`adminRegister_gender_${item.valueEn}`} className='item_gender'
                                             value={item.keyMap} name='gender' />
                                         <label htmlFor={`adminRegister_gender_${item.valueEn}`}>
-                                            {(state.language === 'vi') ? item.valueVi : item.valueEn}</label>
+                                            {(state.language === language.VIETNAMESE) ? item.valueVi : item.valueEn}</label>
                                     </div>
                                 )
                             })}
@@ -218,13 +228,13 @@ function AdminRegister() {
                         <p className='error_message'></p>
                     </div>
                     <div className='col_4_12'>
-                        <div className='item_input reset_input parentInput'>
-                            <select className="form-select animate_input form_select adminRegister_position has_data"
+                        <div className='item_input parentInput'>
+                            <select className="animate_input form_select adminRegister_position has_data"
                                 name='position' value={userPosition} onChange={(e) => setUserPosition(e.target.value)}>
                                 {positions && positions.map((position, index) => {
                                     return (
                                         <option value={position.keyMap} key={index}>
-                                            {(state.language === 'vi') ? position.valueVi : position.valueEn}</option>
+                                            {(state.language === language.VIETNAMESE) ? position.valueVi : position.valueEn}</option>
                                     )
                                 })}
                             </select>
@@ -233,13 +243,13 @@ function AdminRegister() {
                         </div>
                     </div>
                     <div className='col_4_12'>
-                        <div className='item_input reset_input parentInput'>
-                            <select className="form-select animate_input form_select adminRegister_department has_data"
+                        <div className='item_input parentInput'>
+                            <select className="animate_input form_select adminRegister_department has_data"
                                 name='department' value={userDepartment} onChange={(e) => setUserDepartment(e.target.value)}>
                                 {departments && departments.map((department, index) => {
                                     return (
                                         <option value={department.keyMap} key={index}>
-                                            {(state.language === 'vi') ? department.valueVi : department.valueEn}</option>
+                                            {(state.language === language.VIETNAMESE) ? department.valueVi : department.valueEn}</option>
                                     )
                                 })}
                             </select>
@@ -248,7 +258,7 @@ function AdminRegister() {
                         </div>
                     </div>
                     <div className='col_4_12'>
-                        <div className='item_input reset_input parentInput'>
+                        <div className='item_input parentInput'>
                             <input type='text' className='animate_input reset_input' id='adminRegister_usename' name='useName' />
                             <label className='common_label' htmlFor='adminRegister_usename'>{translation.useName}</label>
                             <p className='error_message'></p>
@@ -292,7 +302,7 @@ function AdminRegister() {
                     <p>{translation.or}</p>
                     <div className='divide'></div>
                 </div>
-                <div className='reset_a adminRegister_link button_btn background_linear' onClick={handleGoBack}>{translation.goBack}</div>
+                <div className='adminRegister_link button_btn background_linear' onClick={handleGoBack}>{translation.goBack}</div>
                 {/* <!-- Button trigger modal --> */}
                 <button type="button" className="btn btn-primary open_modal" data-bs-toggle="modal"
                     data-bs-target="#staticBackdrop" ref={openModal} hidden></button>
@@ -313,7 +323,7 @@ function AdminRegister() {
                                 <button type="button" className="btn btn-secondary btn_return_register" ref={btnReturn}
                                     data-bs-dismiss="modal" style={{ fontSize: '1.3rem', marginRight: '10px' }}>{translation.registerAnother}</button>
                                 <Link type="button" className="btn btn-primary reset_a" style={{ fontSize: '1.3rem' }}
-                                    to='/login' onClick={handleCloseModal}>{translation.toLogin}</Link>
+                                    to='/login/setDepartment' onClick={handleCloseModal}>{translation.toLogin}</Link>
                             </div>
                         </div>
                     </div>

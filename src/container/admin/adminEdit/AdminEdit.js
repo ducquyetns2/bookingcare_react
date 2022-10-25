@@ -7,7 +7,7 @@ import Helper from '~/services/Helper'
 import validator from '~/services/validator'
 import { setLanguage } from '~/store/actions'
 import { useParams } from 'react-router-dom'
-
+import { language, department, position } from '~/store/constant'
 
 function AdminEdit() {
     const navigate = useNavigate()
@@ -22,8 +22,8 @@ function AdminEdit() {
     const [positions, setPositions] = useState()
     const [departments, setDepartments] = useState()
     const [user, setUser] = useState()
-    const [userPosition, setUserPosition] = useState('NO')
-    const [userDepartment, setUserDepartment] = useState('US')
+    const [userPosition, setUserPosition] = useState(position.NO)
+    const [userDepartment, setUserDepartment] = useState(department.USER)
     // Define element
     const submitMessage = useRef()
     const handleGoBack = () => {
@@ -145,6 +145,9 @@ function AdminEdit() {
             }
             formData.append(formFields[i], formValues[formFields[i]])
         }
+        var isChangeUseName = (formValues.useName === user.useName) ? false : true
+        formData.append('id', id)
+        formData.append('isChangeUseName', isChangeUseName)
         // Send data
         fetch('http://localhost:8080/api/user/editUser', {
             method: 'PUT',
@@ -168,10 +171,10 @@ function AdminEdit() {
                     setAvatar()
                     setEyePassword(false)
                     setEyeRePassword(false)
-                    setUserPosition('NO')
-                    setUserDepartment('US')
+                    setUserPosition(position.NO)
+                    setUserDepartment(department.USER)
                     setUser(result.data)
-                    Helper.clearInputData(inputElements, '.parentInput', '.error_message')
+                    Helper.clearInputData(inputElements)
                     toast.success(translation.editSuccess, {
                         position: "bottom-right",
                         autoClose: 2000,
@@ -193,10 +196,10 @@ function AdminEdit() {
                     </Link>
                     <h2 className='form_title'>{translation.edit}</h2>
                     <div className='change_language adminEdit_language'>
-                        <span className={(state.language === 'vi') ? 'active' : ''}
-                            onClick={() => dispatch(setLanguage('VI'))}>VN</span>/
-                        <span className={(state.language === 'en') ? 'active' : ''}
-                            onClick={() => dispatch(setLanguage('EN'))}>EN</span>
+                        <span className={(state.language === language.VIETNAMESE) ? 'active' : ''}
+                            onClick={() => dispatch(setLanguage(language.VIETNAMESE))}>VN</span>/
+                        <span className={(state.language === language.ENGLISH) ? 'active' : ''}
+                            onClick={() => dispatch(setLanguage(language.ENGLISH))}>EN</span>
                     </div>
                 </div>
                 <div className='grid_row'>
@@ -232,7 +235,7 @@ function AdminEdit() {
                                         <input type='radio' id={`adminEdit_gender_${item.valueEn}`} className='item_gender'
                                             value={item.keyMap} name='gender' defaultChecked={user && (item.keyMap === user.gender)} />
                                         <label htmlFor={`adminEdit_gender_${item.valueEn}`}>
-                                            {(state.language === 'vi') ? item.valueVi : item.valueEn}</label>
+                                            {(state.language === language.VIETNAMESE) ? item.valueVi : item.valueEn}</label>
                                     </div>
                                 )
                             })}
@@ -247,7 +250,7 @@ function AdminEdit() {
                                 {positions && positions.map((position, index) => {
                                     return (
                                         <option value={position.keyMap} key={index}>
-                                            {(state.language === 'vi') ? position.valueVi : position.valueEn}</option>
+                                            {(state.language === language.VIETNAMESE) ? position.valueVi : position.valueEn}</option>
                                     )
                                 })}
                             </select>
@@ -262,7 +265,7 @@ function AdminEdit() {
                                 {departments && departments.map((department, index) => {
                                     return (
                                         <option value={department.keyMap} key={index}>
-                                            {(state.language === 'vi') ? department.valueVi : department.valueEn}</option>
+                                            {(state.language === language.VIETNAMESE) ? department.valueVi : department.valueEn}</option>
                                     )
                                 })}
                             </select>

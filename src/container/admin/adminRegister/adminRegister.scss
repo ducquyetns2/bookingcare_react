@@ -6,6 +6,12 @@
         align-items: center;
         padding: 0 20px;
 
+        .return_back {
+            &:hover {
+                color: $darkBlue-color;
+            }
+        }
+
         .form_title {
             flex-grow: 1;
             font-size: 2.5rem;
@@ -32,7 +38,7 @@
                 .item_input {
                     position: relative;
 
-                    input[type="passsword"]::-webkit-outer-spin-button,
+                    input[type="number"]::-webkit-outer-spin-button,
                     ::-webkit-inner-spin-button {
                         -webkit-appearance: none;
                     }

@@ -1,0 +1,50 @@
+@import '../../assets/styles/variable.scss';
+
+.login_success {
+    align-items: center;
+    margin-left: 35px;
+
+    img.avatar_user {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+    }
+
+    h4.name_user {
+        opacity: 0.8 !important;
+    }
+
+    .user_select {
+        min-width: 180px;
+
+        li.dropdown-item {
+            cursor: pointer;
+            font-size: 1.4rem;
+            opacity: 0.8;
+        }
+
+        li:last-child {
+            font-size: 1.6rem;
+            text-align: center;
+            cursor: default;
+            color: $blue-color;
+        }
+    }
+
+    .container_change_password {
+        .parentInput {
+            input {
+                width: 100%;
+            }
+
+            &+.parentInput {
+                margin-top: 20px;
+            }
+
+            &:first-child {
+                margin-top: 10px;
+            }
+        }
+
+    }
+}
